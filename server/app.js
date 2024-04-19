@@ -2,10 +2,12 @@ import express from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import cors from "cors";
-
+import cookieParser from "cookie-parser";
 const app = express();
 // Enable CORS middleware
 app.use(cors());
+
+import userRouter from "./routes/user.routes.js";
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -17,10 +19,12 @@ app.use((req, res, next) => {
 });
 //cross site scripting overcome
 app.use(bodyParser.urlencoded({ limit: "10kb", extended: false }));
-// app.use(cookieParser());
+app.use(cookieParser());
 
 //for develpment and status code on console
 app.use(morgan("dev"));
+
+app.use("/api/users", userRouter);
 
 app.use('/',(req,res)=>{
   res.status(200).json({
