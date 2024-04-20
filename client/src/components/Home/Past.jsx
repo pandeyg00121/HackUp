@@ -46,12 +46,12 @@ const Home = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ marginBottom: '1rem', display: 'flex' }}>
             <NavLink to="/home">
-            <Button colorScheme="customBlue" mt={4} marginRight={10}> {/* Change color scheme to customBlue */}
+            <Button colorScheme="white" mt={4} marginRight={10} color={'black'} border={2}> {/* Change color scheme to customBlue */}
               Incoming
             </Button>
             </NavLink>
             <NavLink to="/past">
-            <Button colorScheme="white" mt={4} marginRight={10} color={'black'} border={2}>
+            <Button colorScheme="customBlue" mt={4} marginRight={10}>
               Past
             </Button>
             </NavLink>
