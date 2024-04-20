@@ -43,12 +43,19 @@ const getUser = catchAsync(async (req, res, next) => {
 
   res.status(200).send(user);
 });
-
+///api/users?search=pr
 const getAllUsers = catchAsync(async (req, res, next) => {
-  const allUsers = await User.find({ role: { $ne: "admin" } });
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
 
-  // console.log("hellooo");
-  return res.status(200).send(allUsers);
+  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  res.send(users);
 });
 
 const updateStatus = catchAsync(async (req, res, next) => {

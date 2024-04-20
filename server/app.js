@@ -8,6 +8,8 @@ const app = express();
 app.use(cors());
 
 import userRouter from "./routes/user.routes.js";
+import chatRouter from "./routes/chat.routes.js";
+import messageRouter from "./routes/message.routes.js";
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -25,6 +27,8 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 app.use("/api/users", userRouter);
+app.use("/api/chat", chatRouter);
+app.use("/api/message", messageRouter);
 
 app.use('/',(req,res)=>{
   res.status(200).json({
