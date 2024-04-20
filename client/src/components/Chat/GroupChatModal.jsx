@@ -27,6 +27,7 @@ const GroupChatModal = ({ children }) => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const token = localStorage.getItem("userToken");
 
   const { user, chats, setChats } = ChatState();
 
@@ -50,15 +51,14 @@ const GroupChatModal = ({ children }) => {
     if (!query) {
       return;
     }
-
     try {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const { data } = await axios.get(`http://127.0.0.1:3500/api/user?search=${search}`, config);
       console.log(data);
       setLoading(false);
       setSearchResult(data);
@@ -93,11 +93,11 @@ const GroupChatModal = ({ children }) => {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
       const { data } = await axios.post(
-        `/api/chat/group`,
+        `http://127.0.0.1:3500/api/chat/group`,
         {
           name: groupChatName,
           users: JSON.stringify(selectedUsers.map((u) => u._id)),

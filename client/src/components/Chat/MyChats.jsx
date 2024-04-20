@@ -18,15 +18,22 @@ const MyChats = ({ fetchAgain }) => {
 
   const fetchChats = async () => {
     // console.log(user._id);
+    console.log(user.user._id)
+    const token = localStorage.getItem("userToken");
+    console.log(token);
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
 
-      const { data } = await axios.get("/api/chat", config);
-      setChats(data);
+      const response = await fetch(
+        "http://127.0.0.1:3500/api/chat",config
+      );
+      // console.log(response.json());
+     // const json = await response.json();
+      setChats(response);
     } catch (error) {
       toast({
         title: "Error Occured!",

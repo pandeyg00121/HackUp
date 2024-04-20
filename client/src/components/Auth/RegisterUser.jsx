@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
+  Select,
   ModalBody,
   ModalFooter,
   useDisclosure,
@@ -23,11 +24,60 @@ import { NavLink } from 'react-router-dom';
 
 const RegisterUser = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    userName: '',
+    email: '',
+    gender: '',
+    password: '',
+    confirmPassword: '',
+  });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [confirmationMessage, setConfirmationMessage] = useState('');
 
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData)
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:3500/api/users/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: formData.userName,
+            email: formData.email,
+            gender: formData.gender,
+            password: formData.password,
+            passwordConfirm: formData.confirmPassword
+          }),
+        }
+      );
+      const json = await response.json();
+      console.log(json);
+    } catch (error) {
+      alert("Invalid credentials");
+    }
+  };
+
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleGenderChange = (event) => {
+    setFormData({
+      ...formData,
+      gender: event.target.value,
+    });
   };
 
   return (
@@ -89,6 +139,9 @@ const RegisterUser = () => {
                 placeholder="UserName"
                 borderColor="teal.500"
                 focusBorderColor="teal.700"
+                name="userName"
+                value={formData.userName}
+                onChange={handleInputChange}
               />
             </InputGroup>
             <InputGroup>
@@ -97,7 +150,23 @@ const RegisterUser = () => {
                 placeholder="Email"
                 borderColor="teal.500"
                 focusBorderColor="teal.700"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
               />
+            </InputGroup>
+            <InputGroup>
+              <Select
+                placeholder="Select Gender" // Placeholder for the dropdown menu
+                borderColor="teal.500"
+                focusBorderColor="teal.700"
+                value={formData.gender} // Set the selected value
+                onChange={handleGenderChange} // Handle change event
+                name="gender"
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </Select>
             </InputGroup>
             <InputGroup>
               <Input
@@ -105,6 +174,9 @@ const RegisterUser = () => {
                 placeholder="Password"
                 borderColor="teal.500"
                 focusBorderColor="teal.700"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
               />
               <InputRightElement width="4.5rem">
                 <Button h="1.75rem" size="sm" onClick={handleTogglePassword}>
@@ -118,6 +190,9 @@ const RegisterUser = () => {
                 placeholder="ConfirmPassword"
                 borderColor="teal.500"
                 focusBorderColor="teal.700"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
               />
               <InputRightElement width="4.5rem">
                 <Button h="1.75rem" size="sm" onClick={handleTogglePassword}>
@@ -125,7 +200,7 @@ const RegisterUser = () => {
                 </Button>
               </InputRightElement>
             </InputGroup>
-            <Button colorScheme="teal" bg="teal.500">
+            <Button colorScheme="teal" bg="teal.500" onClick={handleSubmit}>
               Create Account
             </Button>
             <Link as={NavLink} to="/loginUser" color="teal.500">

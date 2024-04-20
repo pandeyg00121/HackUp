@@ -12,12 +12,14 @@ const ChatProvider = ({ children }) => {
   const navigateTo = useNavigate();
 
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+   // console.log(userInfo)
     setUser(userInfo);
+    // const userInfo = "NULL";
 
     if (!userInfo) navigateTo('/loginuser');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history]);
+  }, [navigateTo]);
 
   return (
     <ChatContext.Provider

@@ -34,7 +34,8 @@ const createSendToken = catchAsync(async (user, statusCode, res) => {
 });
 
 const signup = catchAsync(async (req, res, next) => {
-  const username = req.body.name.split(" ")[0];
+  console.log(req.body);
+  const username = req.body.username;
   const gender = req.body.gender;
   const userEmail = req.body.email;
 
@@ -49,7 +50,7 @@ const signup = catchAsync(async (req, res, next) => {
   // return next(new AppError("Please Provide valid Email", 400));
 
   const newUser = await User.create({
-    name: req.body.name,
+    name: req.body.username,
     email: req.body.email,
     gender: req.body.gender,
     password: req.body.password,
