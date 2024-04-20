@@ -50,7 +50,7 @@ const signup = catchAsync(async (req, res, next) => {
   // return next(new AppError("Please Provide valid Email", 400));
 
   const newUser = await User.create({
-    name: req.body.username,
+    name: req.body.name,
     email: req.body.email,
     gender: req.body.gender,
     password: req.body.password,

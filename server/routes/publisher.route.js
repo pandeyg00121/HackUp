@@ -1,5 +1,4 @@
 import express from 'express';
-// import {Router} from 'express';
 import publisherController from "./../controllers/publisher.controller.js";
 
 const router = express.Router();
@@ -8,17 +7,18 @@ router.use(express.json());
 router.post("/signup", publisherController.signup);
 router.post("/login", publisherController.login);
 router.get('/logout', publisherController.logout);
-// router.post("/forgotPassword", authController.forgotPassword);
+
+// Middleware for protected routes
+router.use(publisherController.protect);
 
 // POST /api/hackathons/create
 router.post('/create/:id', publisherController.createHackathon);
 
-router.use(publisherController.protect); // Middleware for protected routes
+router.get('/hackathons/:id', publisherController.viewHackathons);
 
-// router.post("/updateMyPassword", authController.updatePassword);
-// router.get("/me", userController.getMe, userController.getUser); // Combine getMe and getUser logic (if needed)
-// router.post("/updateMe", userController.updateMe);
+router.put('/winning/:id', publisherController.chooseWinningTeams);
+router.get('/g/:id', publisherController.viewWinningTeams);
 
-// router.delete("/deleteMe", userController.deleteMe);
+router.get('/hackathon-teams/:id', publisherController.viewHackathonTeams);
 
-export default router; // Export the router as the default export
+export default router;
