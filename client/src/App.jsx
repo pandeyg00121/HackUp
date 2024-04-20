@@ -1,5 +1,11 @@
-import { Heading } from "@chakra-ui/react"
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import {BrowserRouter,Routes,Route} from "react-router-dom"
+import GitPage from "./components/VersionControl/GitPage"
+import Commits from "./components/VersionControl/Commits"
+import PrevHack from "./components/Publisher/PrevHack"
+import CurrHack from "./components/Publisher/CurrHack"
+import CreateHackathon from "./components/Publisher/CreateHackathon"
+import Leaderboard from "./components/Leaderboard/Leaderboard"
 import LoginUser from "./components/Auth/LoginUser";
 import LoginPub from "./components/Auth/LoginPub"
 import RegisterUser from "./components/Auth/RegisterUser";
@@ -13,8 +19,15 @@ import Chatpage from "./components/Chat/Chatpage";
 function App() {
 
   return (
-
+   <BrowserRouter>
     <Routes>
+      <Route path="/gitpage" element={<GitPage/>}/>
+      <Route path="/commits" element={<Commits/>}/>
+      <Route path="/publisher/prevhackathons" element={<PrevHack/>}/>
+      <Route path="/publisher/currhackathons" element={<CurrHack/>}/>
+      <Route path="/publisher/createhackathon" element={<CreateHackathon/>}/>
+      <Route path="/leaderboard" element={<Leaderboard/>}/>
+   
       <Route path="/loginuser" element={<LoginUser/>}/>
       <Route path="/loginpub" element={<LoginPub/>}/>
       <Route path="/users/signup" element={<RegisterUser/>}/>
@@ -26,6 +39,8 @@ function App() {
       <Route path="/chat" element={<Chatpage/>}/>
 
     </Routes>
+    </BrowserRouter>
+
   )
 }
 
