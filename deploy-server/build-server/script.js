@@ -3,11 +3,7 @@ const path= require('path')
 const fs=require('fs');
 const {S3Client,PutObjectCommand} = require('@aws-sdk/client-s3')
 const mime = require('mime-types')
-const Redis=require('ioredis');
-
-
-const publisher= new Redis('rediss://default:AVNS_8miwqWZrF_y4AvWsgf5@redis-1cc03f47-priyanshu-35b1.e.aivencloud.com:23963');
-
+const { Kafka } = require('kafkajs')
 
 const s3Client=new S3Client({
     region:'ap-south-1',
@@ -18,41 +14,57 @@ const s3Client=new S3Client({
 })
 
 const PROJECT_ID=process.env.PROJECT_ID;
+const DEPLOYEMENT_ID= process.env.DEPLOYEMENT_ID
 
-function publishLog(log){
-   publisher.publish(`logs:${PROJECT_ID}`,JSON.stringify({log}))
+const kafka = new Kafka({
+    clientId: `docker-build-server-${DEPLOYEMENT_ID}`,
+    brokers: ['kafka-3cb9d9c9-pranaypandey00121-f112.d.aivencloud.com:12170'],
+    ssl: {
+        ca: [fs.readFileSync(path.join(__dirname, 'kafka.pem'), 'utf-8')]
+    },
+    sasl: {
+        username: 'avnadmin',
+        password: 'AVNS_uKCRWJButZeOkilyAIj',
+        mechanism: 'plain'
+    }
+
+})
+const producer = kafka.producer()
+
+async function publishLog(log) {
+    await producer.send({ topic: `container-logs`, messages: [{ key: 'log', value: JSON.stringify({ PROJECT_ID, DEPLOYEMENT_ID, log }) }] })
 }
-
 async function init(){
+    await producer.connect()
    console.log('Executing script.js')
-   publishLog('Build Started...')
+   await publishLog('Build Started...')
    const outDirPath=path.join(__dirname,'output')
 
    const p=exec(`cd ${outDirPath} && npm install && npm run build`)
 
    p.stdout.on('data',function(data){
     console.log(data.toString());
-    publishLog(data.toString())
+     publishLog(data.toString())
    })
 
-   p.stdout.on('error',function(data){
+   p.stdout.on('error',async function(data){
     console.log('Error',data.toString());
-    publishLog(`Error: ${data.toString()}`)
+    await publishLog(`Error: ${data.toString()}`)
    })
 
    p.on('close', async function(){
     console.log('Build Complete!')
-    publishLog(`Build Complete!`)
+    await publishLog(`Build Complete!`)
     const distFolderPath= path.join(__dirname,'output','dist');
     const distFolderContents=fs.readdirSync(distFolderPath,{recursive:true})
 
-    publishLog(`Starting to upload`)
+    await publishLog(`Starting to upload`)
     for(const file of distFolderContents){
         const filePath=path.join(distFolderPath,file)
         if(fs.lstatSync(filePath).isDirectory()) continue;
 
         console.log('uploading', filePath)
-        publishLog(`Uploading ${file}...`)
+        await publishLog(`Uploading ${file}...`)
 
         const command=new PutObjectCommand({
             Bucket:'hackup-deploy-bucket',
@@ -66,7 +78,7 @@ async function init(){
         publishLog(`Uploaded ${file}`)
     }
     console.log('Done...')
-    publishLog(`Done!`)
+    await publishLog(`Done!`)
    })
 }
 

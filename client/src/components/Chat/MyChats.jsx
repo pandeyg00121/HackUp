@@ -24,16 +24,16 @@ const MyChats = ({ fetchAgain }) => {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       };
 
-      const response = await fetch(
+      const response = await axios.get(
         "http://127.0.0.1:3500/api/chat",config
       );
-      // console.log(response.json());
+      console.log(response);
      // const json = await response.json();
-      setChats(response);
+      setChats(response.data);
     } catch (error) {
       toast({
         title: "Error Occured!",
