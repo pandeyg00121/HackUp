@@ -3,7 +3,7 @@ import dotenv  from "dotenv";
 
 import {app} from "./app.js"
 
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: "../config.env" });
 
 process.on("uncaughtException", (err) => {
   console.log("Uncaught Exception ...");
@@ -14,7 +14,7 @@ process.on("uncaughtException", (err) => {
 mongoose.connect("mongodb://127.0.0.1/HackUp", { useNewUrlParser: true })
   .then(() => console.log("DB connected Successfull...."));
 
-const port = 3500;
+const port = process.env.PORT;
 
 const server = app.listen(port, () => {
   const date = new Date(); // Get the current date and time
