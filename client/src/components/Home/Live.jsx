@@ -13,7 +13,7 @@ const theme = extendTheme({
   },
 });
 
-const Home = () => {
+const Live = () => {
   // Sample data for the cards
   const hackathonsData = [
     {
@@ -46,7 +46,7 @@ const Home = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ marginBottom: '1rem', display: 'flex' }}>
             <NavLink to="/home">
-            <Button colorScheme="customBlue" mt={4} marginRight={10}> {/* Change color scheme to customBlue */}
+            <Button colorScheme="white" mt={4} marginRight={10} color={'black'} border={2}> {/* Change color scheme to customBlue */}
               Incoming
             </Button>
             </NavLink>
@@ -56,7 +56,7 @@ const Home = () => {
             </Button>
             </NavLink>
             <NavLink to="/live">
-            <Button colorScheme="white" mt={4} marginRight={10} color={'black'} border={2}>
+            <Button colorScheme="customBlue" mt={4} marginRight={10}>
               Live
             </Button>
             </NavLink>
@@ -79,4 +79,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Live;
