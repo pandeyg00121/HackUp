@@ -14,7 +14,7 @@ router.post("/forgotPassword", authController.forgotPassword);
 router.patch("/resetPassword/:token", authController.resetPassword);
 
 router.use(authController.protect); // Middleware for protected routes
-
+router.get("/",userController.getAllUsers);
 router.post("/updateMyPassword", authController.updatePassword);
 router.get("/me", userController.getMe, userController.getUser); // Combine getMe and getUser logic (if needed)
 router.post("/updateMe", userController.updateMe);

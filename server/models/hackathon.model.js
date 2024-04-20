@@ -90,6 +90,7 @@ const hackathonSchema = new mongoose.Schema({
   },
   resultDeclared: { type: Boolean, default: false }, // Indicates if results are declared
   winningTeams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }], // Array of winning teams
+
 });
 
 // Pre-save middleware to generate a unique slug from the title before saving

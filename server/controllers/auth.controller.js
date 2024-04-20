@@ -34,7 +34,8 @@ const createSendToken = catchAsync(async (user, statusCode, res) => {
 });
 
 const signup = catchAsync(async (req, res, next) => {
-  const username = req.body.name.split(" ")[0];
+  console.log(req.body);
+  const username = req.body.username;
   const gender = req.body.gender;
   const userEmail = req.body.email;
 
@@ -49,7 +50,7 @@ const signup = catchAsync(async (req, res, next) => {
   // return next(new AppError("Please Provide valid Email", 400));
 
   const newUser = await User.create({
-    name: req.body.name,
+    name: req.body.username,
     email: req.body.email,
     gender: req.body.gender,
     password: req.body.password,
@@ -109,15 +110,17 @@ const logout = (req, res) => {
 const protect = catchAsync(async (req, res, next) => {
   let token;
   // 1) Getting token and check of it's there
+  console.log(req.headers.authorization);
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
-    token = req.headers.authorization.split(" ")[1];
+    // token = .split(" ")[1];
+    token = req.headers.authorization.split('"')[1]
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-
+  console.log(token);
   if (!token) {
     //401 stands for unauthorized
     return next(

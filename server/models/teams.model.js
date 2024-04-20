@@ -32,6 +32,10 @@ const teamSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  teamCode:{
+type: String,
+// required:true,
+  },
   projectUrl: {
     type: String,
   },
