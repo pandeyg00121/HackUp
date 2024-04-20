@@ -39,12 +39,29 @@ const hackathonSchema = new mongoose.Schema({
       message: "End date must be after start date!",
     },
   },
-  prizes: {
-    type: String,
-    default: "Exciting prizes await the winners!",
+  teamSizeOptions: {
+    type: [{
+      min: {
+        type: Number,
+        required: true,
+        min: 1,
+      },
+      max: {
+        type: Number,
+        required: true,
+        validate: {
+          validator: function (value) {
+            return value > this.min; // Ensure max is greater than min
+          },
+          message: "Max team size must be greater than min team size",
+        },
+      },
+    }],
+    description: "Allowed team size options (min and max members)",
   },
-  // You can add additional fields like website URL, registration link, etc.
-  website: String,
+  prizePool: {
+    type: Number,
+  },
   registrationLink: String,
   // Reference to an array of Team documents representing participating teams (optional)
   teams: [{
@@ -61,6 +78,18 @@ const hackathonSchema = new mongoose.Schema({
     default: false,
   },
   imageUrl: String,
+  registrationEndDate: {
+    type: Date,
+    validate: {
+      validator: function (value) {
+        // Optional validation: Ensure registration end date is before end date
+        return value < this.endDate;
+      },
+      message: "Registration end date must be before hackathon end date!",
+    },
+  },
+  resultDeclared: { type: Boolean, default: false }, // Indicates if results are declared
+  winningTeams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }], // Array of winning teams
 });
 
 // Pre-save middleware to generate a unique slug from the title before saving
