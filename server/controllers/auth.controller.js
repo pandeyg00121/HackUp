@@ -110,7 +110,7 @@ const logout = (req, res) => {
 const protect = catchAsync(async (req, res, next) => {
   let token;
   // 1) Getting token and check of it's there
-  console.log(req.headers.authorization);
+  // console.log(req.headers.authorization);
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
@@ -120,7 +120,7 @@ const protect = catchAsync(async (req, res, next) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-  console.log(token);
+  console.log("me",token);
   if (!token) {
     //401 stands for unauthorized
     return next(

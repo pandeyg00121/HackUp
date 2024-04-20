@@ -25,31 +25,31 @@ import UserListItem from "./userAvatar/UserListItem";
 const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState();
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [renameloading, setRenameLoading] = useState(false);
   const toast = useToast();
   const token = localStorage.getItem("userToken")
   const { selectedChat, setSelectedChat, user } = ChatState();
+  // const token = localStorage.getItem("userToken")
 
-  const handleSearch = async (query) => {
-    setSearch(query);
-    if (!query) {
+  const handleSearch = async (val) => {
+    // setSearch(query);
+    if (!val) {
       return;
     }
-    const token = localStorage.getItem("userToken")
     try {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search=${search}`, config);
+      const data  = await axios.get(`http://127.0.0.1:3500/api/users?search=${val}`, config);
       console.log(data);
       setLoading(false);
-      setSearchResult(data);
+      setSearchResult(data.data);
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -70,7 +70,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       setRenameLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          authorization: `Bearer ${token}`,
         },
       };
       const { data } = await axios.put(
@@ -128,7 +128,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       };
       const { data } = await axios.put(
@@ -173,17 +173,22 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.put(
+
+      // console.log("nhi",selectedChat._id);
+      // console.log("kuch",user1.user._id);
+      const data  = await axios.put(
         `http://127.0.0.1:3500/api/chat/groupremove`,
         {
           chatId: selectedChat._id,
-          userId: user1._id,
+          userId: user1.user._id,
         },
         config
       );
+
+      console.log(data);
 
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
       setFetchAgain(!fetchAgain);

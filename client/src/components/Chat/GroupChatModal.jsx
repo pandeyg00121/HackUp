@@ -22,12 +22,12 @@ import UserListItem from "./userAvatar/UserListItem";
 const GroupChatModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState();
+  // const [query, setQuery] = useState();
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const token = localStorage.getItem("userToken");
 
   const { user, chats, setChats } = ChatState();
 
@@ -46,22 +46,27 @@ const GroupChatModal = ({ children }) => {
     setSelectedUsers([...selectedUsers, userToAdd]);
   };
 
-  const handleSearch = async (query) => {
-    setSearch(query);
-    if (!query) {
+  const handleSearch = async (val) => {
+    // console.log(val)
+    // setSearch(val);
+    if (!val) {
       return;
     }
+    // console.log("song");
+    // console.log("abcd",search);
     try {
+      const token = localStorage.getItem("userToken");
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.get(`http://127.0.0.1:3500/api/user?search=${search}`, config);
-      console.log(data);
+      // console.log(`http://127.0.0.1:3500/api/user?search=${val}`);
+      const response  = await axios.get(`http://127.0.0.1:3500/api/users?search=${val}`, config);
+      console.log(response.data);
       setLoading(false);
-      setSearchResult(data);
+      setSearchResult(response.data);
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -91,6 +96,7 @@ const GroupChatModal = ({ children }) => {
     }
 
     try {
+      const token = localStorage.getItem("userToken");
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
