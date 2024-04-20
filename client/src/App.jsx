@@ -19,7 +19,6 @@ import Chatpage from "./components/Chat/Chatpage";
 function App() {
 
   return (
-   <BrowserRouter>
     <Routes>
       <Route path="/gitpage" element={<GitPage/>}/>
       <Route path="/commits" element={<Commits/>}/>
@@ -27,19 +26,20 @@ function App() {
       <Route path="/publisher/currhackathons" element={<CurrHack/>}/>
       <Route path="/publisher/createhackathon" element={<CreateHackathon/>}/>
       <Route path="/leaderboard" element={<Leaderboard/>}/>
-   
-      <Route path="/loginuser" element={<LoginUser/>}/>
-      <Route path="/loginpub" element={<LoginPub/>}/>
+      <Route path="/participate" element={<Participate/>}/>
+      
       <Route path="/users/signup" element={<RegisterUser/>}/>
       <Route path="/publisher/signup" element={<RegisterPublisher/>}/>
+      <Route path="/loginuser" element={<LoginUser/>}/>
+      <Route path="/loginpub" element={<LoginPub/>}/>
+      
       <Route path="/home" element={<Home/>}/>
       <Route path="/past" element={<Past/>}/>
       <Route path="/live" element={<Live/>}/>
-      <Route path="/participate" element={<Participate/>}/>
+      
       <Route path="/chat" element={<Chatpage/>}/>
 
     </Routes>
-    </BrowserRouter>
 
   )
 }

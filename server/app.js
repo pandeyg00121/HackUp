@@ -14,7 +14,7 @@ import teamRouter from "./routes/teams.route.js";
 
 import chatRouter from "./routes/chat.routes.js";
 import messageRouter from "./routes/message.routes.js";
-import gitRouter from "./routes/git.routes.js";
+// import gitRouter from "./routes/git.routes.js";
 
 
 app.use((req, res, next) => {
@@ -39,7 +39,7 @@ app.use("/api/teams", teamRouter);
 
 app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRouter);
-app.use("/api/git", gitRouter);
+// app.use("/api/git", gitRouter);
 
 app.use('/',(req,res)=>{
   res.status(200).json({
