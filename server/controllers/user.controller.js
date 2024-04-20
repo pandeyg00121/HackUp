@@ -45,6 +45,7 @@ const getUser = catchAsync(async (req, res, next) => {
 });
 ///api/users?search=pr
 const getAllUsers = catchAsync(async (req, res, next) => {
+  console.log("wwe",req.query.search);
   const keyword = req.query.search
     ? {
         $or: [
