@@ -38,12 +38,12 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
     if (!query) {
       return;
     }
-
+    const token = localStorage.getItem("userToken")
     try {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
       const { data } = await axios.get(`/api/user?search=${search}`, config);
