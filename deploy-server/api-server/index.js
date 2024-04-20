@@ -29,8 +29,8 @@ const ecsClient=new ECSClient({
 });
 
 const config={
-    CLUSTER:'arn:aws:ecs:ap-south-1:891376970589:cluster/hackup-builder-cluster',
-    TASK:'arn:aws:ecs:ap-south-1:891376970589:task-definition/builder-task'
+    CLUSTER:'arn:aws:ecs:ap-south-1:891376970589:cluster/hackup-cluster',
+    TASK:'arn:aws:ecs:ap-south-1:891376970589:task-definition/builder-task-1'
 }
 
 app.use(express.json())
