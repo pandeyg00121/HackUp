@@ -30,7 +30,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   const [loading, setLoading] = useState(false);
   const [renameloading, setRenameLoading] = useState(false);
   const toast = useToast();
-
+  const token = localStorage.getItem("userToken")
   const { selectedChat, setSelectedChat, user } = ChatState();
 
   const handleSearch = async (query) => {
@@ -74,7 +74,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.put(
-        `/api/chat/rename`,
+        `http:127.0.0.1:3500/api/chat/rename`,
         {
           chatId: selectedChat._id,
           chatName: groupChatName,
@@ -128,11 +128,11 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
       const { data } = await axios.put(
-        `/api/chat/groupadd`,
+        `http://127.0.0.1:3500/api/chat/groupadd`,
         {
           chatId: selectedChat._id,
           userId: user1._id,
@@ -173,11 +173,11 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
       const { data } = await axios.put(
-        `/api/chat/groupremove`,
+        `http://127.0.0.1:3500/api/chat/groupremove`,
         {
           chatId: selectedChat._id,
           userId: user1._id,

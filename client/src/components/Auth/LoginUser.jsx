@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -23,11 +24,49 @@ import { NavLink } from 'react-router-dom';
 
 const LoginUser = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [confirmationMessage, setConfirmationMessage] = useState('');
 
+  const navigateTo = useNavigate();
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:3500/api/users/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        }
+      );
+      const json = await response.json();
+      console.log(json.token)
+      // console.log(JSON.stringify(json));
+      localStorage.setItem("userToken",JSON.stringify(json.token));
+      localStorage.setItem("userInfo", JSON.stringify(json.data));
+      navigateTo("/chat")
+    } catch (error) {
+      alert("Invalid credentials");
+    }
   };
 
   return (
@@ -89,6 +128,8 @@ const LoginUser = () => {
                 placeholder="Email"
                 borderColor="teal.500"
                 focusBorderColor="teal.700"
+                value={email}
+                onChange={handleEmailChange}
               />
             </InputGroup>
             <InputGroup>
@@ -97,6 +138,8 @@ const LoginUser = () => {
                 placeholder="Password"
                 borderColor="teal.500"
                 focusBorderColor="teal.700"
+                value={password}
+                onChange={handlePasswordChange}
               />
               <InputRightElement width="4.5rem">
                 <Button h="1.75rem" size="sm" onClick={handleTogglePassword}>
@@ -104,7 +147,7 @@ const LoginUser = () => {
                 </Button>
               </InputRightElement>
             </InputGroup>
-            <Button colorScheme="teal" bg="teal.500">
+            <Button colorScheme="teal" bg="teal.500" onClick={handleSubmit}>
               Login
             </Button>
             <Link as={NavLink} to="/users/signup" color="teal.500">
