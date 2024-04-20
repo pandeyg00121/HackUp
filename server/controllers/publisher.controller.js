@@ -6,6 +6,7 @@ import axios from "axios";
 
 import Publisher from "../models/publisher.model.js";
 import Hackathon from "../models/hackathon.model.js";
+import Team from "../models/teams.model.js";
 import catchAsync from "./../utils/catchAsync.js";
 import AppError from "./../utils/appError.js";
 
@@ -88,11 +89,12 @@ const signToken = (id) => {
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
-    ) {
-      token = req.headers.authorization.split(" ")[1];
-    } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
-    }
+      ) {
+        token = req.headers.authorization.split(" ")[1];
+      } else if (req.cookies.jwt) {
+        token = req.cookies.jwt;
+      }
+      console.log(token)
   
     if (!token) {
       //401 stands for unauthorized
@@ -103,7 +105,9 @@ const signToken = (id) => {
     //2)Verification of token
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   
+    console.log(decoded.id);
     const freshPublisher = await Publisher.findById(decoded.id);
+    console.log(freshPublisher)
     if (!freshPublisher) {
       return next(
         new AppError("The publisher belonging to this token does not exist.", 401)
@@ -164,7 +168,7 @@ const verifyPublisher = catchAsync(async (req, res) => {
 
 // Function to create a new Hackathon by a Publisher
 const createHackathon = catchAsync(async (req, res) => {
-  console.log(req.params);
+  // console.log(req.params);
   const {
     title,
     description,
@@ -172,7 +176,7 @@ const createHackathon = catchAsync(async (req, res) => {
     startDate,
     endDate,
     teamSizeOptions,
-    prizePool,
+    prizePool, 
     // registrationLink,
     // imageUrl,
     registrationEndDate,
@@ -180,7 +184,7 @@ const createHackathon = catchAsync(async (req, res) => {
 
   // Get the logged-in publisher from req
   const { publisher } = req;
-  console.log(req.body);
+  // console.log(req.body);
 
   // Create a new Hackathon
   const newHackathon = await Hackathon.create({
@@ -206,10 +210,125 @@ const createHackathon = catchAsync(async (req, res) => {
   });
 });
 
+const viewHackathons = catchAsync(async (req, res, next) => {
+  const { publisherId } = req.params;
 
+  // Get current date
+  const currentDate = new Date();
+
+  // Fetch hackathons
+  const pastHackathons = await Hackathon.find({
+    publisher: publisherId,
+    endDate: { $lt: currentDate },
+    resultDeclared: true,
+  });
+
+  const upcomingHackathons = await Hackathon.find({
+    publisher: publisherId,
+    startDate: { $gt: currentDate },
+  });
+
+  const liveHackathons = await Hackathon.find({
+    publisher: publisherId,
+    startDate: { $lte: currentDate },
+    endDate: { $gte: currentDate },
+    resultDeclared: false,
+  });
+
+  if (!pastHackathons || !upcomingHackathons || !liveHackathons) {
+    return next(new AppError('Failed to fetch hackathons', 500));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: {
+      pastHackathons,
+      upcomingHackathons,
+      liveHackathons,
+    },
+  });
+});
+
+const chooseWinningTeams = catchAsync(async (req, res, next) => {
+  const  hackathonId  = req.params.id;
+  const { winningTeamIds } = req.body;
+
+  const hackathon = await Hackathon.findByIdAndUpdate(
+    hackathonId,
+    { winningTeams: winningTeamIds },
+    { new: true }
+  );
+
+  if (!hackathon) {
+    return next(new AppError('Hackathon not found', 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: {
+      hackathon,
+    },
+  });
+});
+
+const viewHackathonTeams = catchAsync(async (req, res, next) => {
+   const hackathonId  = req.params.id;
+  //  console.log(hackathonId)
+  //  console.log(req.params);
+  //  console.log("me");
+  const teams = await Team.find({ hackathon: hackathonId });
+  // console.log(teams);
+
+  if (!teams) {
+    return next(new AppError('Teams not found for this hackathon', 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: {
+      teams,
+    },
+  });
+});
+
+// Function to view winning teams for a hackathon
+const viewWinningTeams = catchAsync(async (req, res, next) => {
+  const hackathonId  = req.params.id;
+
+  // Find the hackathon by ID
+  console.log(hackathonId);
+  const hackathon = await Hackathon.findById(hackathonId);
+  console.log(hackathon);
+  if (!hackathon) {
+    return next(new AppError('Hackathon not found', 404));
+  }
+
+  // Check if winning teams are chosen
+  if (!hackathon.winningTeams || hackathon.winningTeams.length === 0) {
+    return next(new AppError('Winning teams not chosen for this hackathon', 404));
+  }
+
+  // Find the winning teams
+  const winningTeams = await Team.find({ _id: { $in: hackathon.winningTeams } }).populate("members");
+
+  if (!winningTeams) {
+    return next(new AppError('No winning teams found for this hackathon', 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: {
+      winningTeams,
+    },
+  });
+});
 
 // Exports at the end
 export default {
+  viewWinningTeams,
+  viewHackathonTeams,
+   chooseWinningTeams,
+  viewHackathons,
   createHackathon,
   getAllPublishers,
   getPublisherById,
