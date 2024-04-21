@@ -15,6 +15,7 @@ import Past from "./components/Home/Past";
 import Live from "./components/Home/Live";
 import Participate from "./components/Participate/Participate";
 import Chatpage from "./components/Chat/Chatpage";
+//import DeploymentPage from "./components/DeploymentPage/DeploymentPage"
 
 function App() {
 
@@ -27,12 +28,14 @@ function App() {
       <Route path="/publisher/createhackathon" element={<CreateHackathon/>}/>
       <Route path="/leaderboard" element={<Leaderboard/>}/>
       <Route path="/participate" element={<Participate/>}/>
+      {/* //<Route path="/deploy" element={<DeploymentPage/>}/> */}
+
       
       <Route path="/users/signup" element={<RegisterUser/>}/>
       <Route path="/publisher/signup" element={<RegisterPublisher/>}/>
       <Route path="/loginuser" element={<LoginUser/>}/>
       <Route path="/loginpub" element={<LoginPub/>}/>
-      
+
       <Route path="/home" element={<Home/>}/>
       <Route path="/past" element={<Past/>}/>
       <Route path="/live" element={<Live/>}/>
