@@ -15,7 +15,9 @@ import Past from "./components/Home/Past";
 import Live from "./components/Home/Live";
 import Participate from "./components/Participate/Participate";
 import Chatpage from "./components/Chat/Chatpage";
-//import DeploymentPage from "./components/DeploymentPage/DeploymentPage"
+import Pubhome from "./components/Home/Pubhome"
+import Publive from "./components/Home/Publive"
+import Pubpast from "./components/Home/Pubpast"
 
 function App() {
 
@@ -41,6 +43,10 @@ function App() {
       <Route path="/live" element={<Live/>}/>
       
       <Route path="/chat" element={<Chatpage/>}/>
+      <Route path="/pubhome" element={<Pubhome/>}/>
+      <Route path="/publive" element={<Publive/>}/>
+      <Route path="/pubpast" element={<Pubpast/>}/>
+
 
     </Routes>
 

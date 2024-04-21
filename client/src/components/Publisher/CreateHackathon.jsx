@@ -9,14 +9,60 @@ const CreateHackathon = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [prizePool, setPrizePool] = useState("");
-  const [registrationLink, setRegistrationLink] = useState("");
+  // const [registrationLink, setRegistrationLink] = useState("");
   const [registrationEndDate, setRegistrationEndDate] = useState("");
   const [minTeamSize, setMinTeamSize] = useState(1);
   const [maxTeamSize, setMaxTeamSize] = useState(1);
 
-  const submitHandler = (e) => {
+  const submitHandler = async(e) => {
     e.preventDefault();
     // Here you can handle form submission
+     const hackathonData = {
+      title,
+      description,
+      startDate,
+      endDate,
+      prizePool,
+      // registrationLink,
+      registrationEndDate,
+      teamSizeOptions: {
+        min: minTeamSize,
+        max: maxTeamSize,
+      }
+    };
+
+    try {
+      // console.log("hi");
+      const publisherId = localStorage.getItem("publisherId");
+      console.log(publisherId)
+      const response = await fetch(
+        `http://127.0.0.1:3500/api/publishers/create/${publisherId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title:title,
+      description:description,
+      startDate: startDate,
+      endDate: endDate,
+      prizePool:prizePool,
+      // registrationLink
+      registrationEndDate:registrationEndDate,
+      teamSizeOptions: {
+        min: minTeamSize,
+        max: maxTeamSize,
+      }
+          }),
+        }
+      );
+      const json = await response.json();
+      console.log(json);
+      // navigateTo("/loginpub")
+    } catch (error) {
+      alert("Invalid credentials");
+    }
   }
 
   return (
@@ -78,7 +124,7 @@ const CreateHackathon = () => {
                 focusBorderColor="red.300"
               />
             </FormControl>
-            <FormControl>
+            {/* <FormControl>
               <FormLabel>Registration Link:</FormLabel>
               <Input
                 value={registrationLink}
@@ -87,7 +133,7 @@ const CreateHackathon = () => {
                 type="url"
                 focusBorderColor="red.300"
               />
-            </FormControl>
+            </FormControl> */}
             <FormControl>
               <FormLabel>Registration End Date:</FormLabel>
               <Input

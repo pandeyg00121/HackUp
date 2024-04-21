@@ -9,10 +9,10 @@ router.post("/login", publisherController.login);
 router.get('/logout', publisherController.logout);
 
 // Middleware for protected routes
-router.use(publisherController.protect);
 
 // POST /api/hackathons/create
 router.post('/create/:id', publisherController.createHackathon);
+router.use(publisherController.protect);
 
 router.get('/hackathons/:id', publisherController.viewHackathons);
 
