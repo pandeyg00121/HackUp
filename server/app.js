@@ -16,7 +16,7 @@ import chatRouter from "./routes/chat.routes.js";
 import messageRouter from "./routes/message.routes.js";
 import hackathonRouter from "./routes/hackathon.routes.js"
 
-import gitRouter from "./routes/git.routes.js";
+// import gitRouter from "./routes/git.routes.js";
 
 
 
@@ -46,7 +46,7 @@ app.use("/api/message", messageRouter);
 app.use("/api/hackathons",hackathonRouter);
 
 app.use("/api/hackathons", hackathonRouter);
-app.use("/api/git", gitRouter);
+// app.use("/api/git", gitRouter);
 
 
 app.use('/',(req,res)=>{

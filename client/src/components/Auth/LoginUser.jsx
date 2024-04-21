@@ -63,7 +63,7 @@ const LoginUser = () => {
       // console.log(JSON.stringify(json));
       localStorage.setItem("userToken",JSON.stringify(json.token));
       localStorage.setItem("userInfo", JSON.stringify(json.data));
-      navigateTo("/chat")
+      navigateTo("/")
     } catch (error) {
       alert("Invalid credentials");
     }

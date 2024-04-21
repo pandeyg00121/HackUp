@@ -3,6 +3,7 @@ import Header from '../Layout/Header';
 import Card from '../Card';
 import { Box, Button, Text, extendTheme, ChakraProvider} from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
+import Footer from '../Layout/Footer';
 
 // Custom color scheme
 
@@ -55,9 +56,9 @@ const Past = () => {
         <Header />
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ marginBottom: '1rem', display: 'flex' }}>
-            <NavLink to="/home">
+            <NavLink to="/">
             <Button colorScheme="white" mt={4} marginRight={10} color={'black'} border={2}> {/* Change color scheme to customBlue */}
-              Incoming
+              Upcoming
             </Button>
             </NavLink>
             <NavLink to="/past">
@@ -70,12 +71,18 @@ const Past = () => {
               Live
             </Button>
             </NavLink>
+            <NavLink to="/leaderboard">
+            <Button colorScheme="white" mt={4} marginRight={10} color={'black'} border={2}>
+              Leaderboard
+            </Button>
+            </NavLink>
           </div>
           <h2 style={headingStyle}>Hackathons</h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
             {hackathonsData.map(hackathon => (
               <Card
                  key={hackathon._id}
+                 id={hackathon._id}
                 name={hackathon.description}
                 StartDate={hackathon.startDate}
                 EndDate ={hackathon.endDate}
@@ -85,6 +92,7 @@ const Past = () => {
             ))}
           </div>
         </div>
+        <Footer/>
       </div>
     </ChakraProvider>
   );

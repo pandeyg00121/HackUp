@@ -61,10 +61,12 @@ import Team from './../models/teams.model.js';
 
 const createTeam = catchAsync(async (req, res, next) => {
     const {teamName}  = req.body;
-    const  userId  = req.user.id;
     const  hackathonId  = req.params.id;
+    console.log("abc",req.user)
+    const  userId  = req.user.id;
+
     // const teamName  = req.body;
-    // console.log(userId,teamName,hackathonId);
+    console.log(userId,teamName,hackathonId);
   
     // Check if the hackathon exists
     const hackathon = await Hackathon.findById(hackathonId);

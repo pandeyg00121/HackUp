@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 
 const GitPage = () => {
   const [repoInfo, setRepoInfo] = useState({
-    "name": "my-hackathon-platform",
-    "description": "A platform for organizing hackathons",
+    "name": "Web-Deviola",
+    "description": "Participating in Hackathons!",
     "html_url": "https://github.com/yourusername/my-hackathon-platform",
     "stargazers_count": 100,
     "forks_count": 50,
@@ -73,6 +73,9 @@ const GitPage = () => {
      <VStack mt={"4"} align="start" spacing="4">
         <Link to={"/commits"}>
           <Text fontWeight={"bold"} fontSize={"lg"} color={"white"}>Commits</Text>
+        </Link>
+        <Link to={"/chat"}>
+          <Text fontWeight={"bold"} fontSize={"lg"} color={"white"}>Chat</Text>
         </Link>
         <HStack mt={"5"} spacing="4">
           <Badge fontSize={"lg"} colorScheme="blue">Stars: {repoInfo?.stargazers_count}</Badge>

@@ -5,7 +5,7 @@ import Commits from "./components/VersionControl/Commits"
 import PrevHack from "./components/Publisher/PrevHack"
 import CurrHack from "./components/Publisher/CurrHack"
 import CreateHackathon from "./components/Publisher/CreateHackathon"
-import Leaderboard from "./components/Leaderboard/Leaderboard"
+
 import LoginUser from "./components/Auth/LoginUser";
 import LoginPub from "./components/Auth/LoginPub"
 import RegisterUser from "./components/Auth/RegisterUser";
@@ -18,6 +18,7 @@ import Chatpage from "./components/Chat/Chatpage";
 import Pubhome from "./components/Home/Pubhome"
 import Publive from "./components/Home/Publive"
 import Pubpast from "./components/Home/Pubpast"
+import Leaderboard from "./components/Home/Leaderboard"
 
 function App() {
 
@@ -34,10 +35,10 @@ function App() {
       <Route path="/loginpub" element={<LoginPub/>}/>
       <Route path="/users/signup" element={<RegisterUser/>}/>
       <Route path="/publisher/signup" element={<RegisterPublisher/>}/>
-      <Route path="/home" element={<Home/>}/>
+      <Route path="/" element={<Home/>}/>
       <Route path="/past" element={<Past/>}/>
       <Route path="/live" element={<Live/>}/>
-      <Route path="/participate" element={<Participate/>}/>
+      <Route path="/participate/:id" element={<Participate/>}/>
       <Route path="/chat" element={<Chatpage/>}/>
       <Route path="/pubhome" element={<Pubhome/>}/>
       <Route path="/publive" element={<Publive/>}/>

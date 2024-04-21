@@ -99,9 +99,7 @@ const Header = () => {
               <VStack spacing={'8'} alignItems={'flex-start'}>
                 <LinkButton onClose={onClose} url="/" title="Home" />
                 <LinkButton onClose={onClose} url="/user/profile" title="My Profile" />
-                <LinkButton onClose={onClose} url="/foods" title="All Foods" />
-                <LinkButton onClose={onClose} url="/restaurants" title="All Restaurants" />
-                <LinkButton onClose={onClose} url="/users/viewcart" title="My Cart" />
+                
                 <HStack
                   justifyContent={'space-evenly'}
                   position={'absolute'}
@@ -123,7 +121,7 @@ const Header = () => {
                             </Button> 
                         </HStack>
                         {
-                            user && user.role==="publisher" && <Link onClick={onClose} to="/admin/dashboard">
+                            user && user.role==="publisher" && <Link onClick={onClose} to="/publisher/currhackathons">
                                 <Button colorScheme='purple' variant={"ghost"}>
                                 <RiDashboardFill style={{margin:"4px"}}/>
                                    Dashboard 
