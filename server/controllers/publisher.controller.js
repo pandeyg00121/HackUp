@@ -7,6 +7,7 @@ import axios from "axios";
 import Publisher from "../models/publisher.model.js";
 import Hackathon from "../models/hackathon.model.js";
 import Team from "../models/teams.model.js";
+import User from "../models/user.model.js";
 import catchAsync from "./../utils/catchAsync.js";
 import AppError from "./../utils/appError.js";
 
@@ -262,6 +263,28 @@ const chooseWinningTeams = catchAsync(async (req, res, next) => {
   if (!hackathon) {
     return next(new AppError('Hackathon not found', 404));
   }
+ // Update hackathon's winning teams
+ hackathon.winningTeams = winningTeamIds;
+ await hackathon.save();
+
+ // Increment number of hackathons won for each member of the winning teams
+ for (const teamId of winningTeamIds) {
+   const team = await Team.findById(teamId);
+   if (!team) {
+     continue; // Skip if team not found
+   }
+
+   // Update hackathonsWon for each member of the team
+   for (const memberId of team.members) {
+     const user = await User.findById(memberId);
+     if (!user) {
+       continue; // Skip if user not found
+     }
+
+     user.hackathonsWon = user.hackathonsWon ? user.hackathonsWon + 1 : 1; // Increment hackathonsWon
+     await user.save();
+   }
+ }
 
   res.status(200).json({
     success: true,

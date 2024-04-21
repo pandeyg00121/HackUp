@@ -1,10 +1,15 @@
 import express from 'express';
-import hackathonController from "./../controllers/hackathon.controller.js";
+import {createTeam, joinTeam} from "./../controllers/hackathon.controller.js";
+import authController from "./../controllers/auth.controller.js";
 // import { registerForHackathon } from './../controllers/hackathon.controller';
 
 const router = express.Router();
 router.use(express.json());
 // POST /api/hackathons/register
-router.post('/register', hackathonController.registerForHackathon);
+
+router.use(authController.protect);
+
+router.post('/register/create/:id',createTeam);
+router.post('/register/join/:id',joinTeam);
 
 export default router;

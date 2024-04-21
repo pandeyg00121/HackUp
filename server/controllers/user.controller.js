@@ -103,4 +103,45 @@ const deleteMe = catchAsync(async (req, res, next) => {
 });
 
 
-export default {updateUser, deleteUser, getUser,  getAllUsers,updateStatus, getMe, updateMe , deleteMe}
+const updateRating = async (userId, hackathonId) => {
+  try {
+    const user = await User.findById(userId);
+    const hackathon = await Hackathon.findById(hackathonId);
+
+    if (!user || !hackathon) {
+      throw new AppError('User or Hackathon not found', 404);
+    }
+
+    // Calculate new rating based on user's performance
+    const oldRating = user.rating;
+    const K = 30; // K-factor for Elo rating system
+    const expectedScore = 1 / (1 + 10 ** ((hackathon.averageRating - oldRating) / 400));
+    const actualScore = 1; // Assume winner gets full score
+    const newRating = Math.round(oldRating + K * (actualScore - expectedScore));
+
+    // Update user's rating
+    user.rating = Math.max(1000, Math.min(3000, newRating)); // Limit rating to range [1000, 3000]
+
+    // Increment totalHackathons participated in
+    user.totalHackathons = user.totalHackathons ? user.totalHackathons + 1 : 1;
+
+    // Increment hackathonsWon if user is a winner
+    if (hackathon.winningTeams.includes(user.team)) {
+      user.hackathonsWon = user.hackathonsWon ? user.hackathonsWon + 1 : 1;
+    }
+
+    // Update lastActive to current date
+    user.lastActive = Date.now();
+
+    // Save the updated user
+    await user.save();
+
+    return user;
+  } catch (error) {
+    throw new AppError('Error updating user rating', 500);
+  }
+};
+
+
+
+export default {updateRating ,updateUser, deleteUser, getUser,  getAllUsers,updateStatus, getMe, updateMe , deleteMe}
