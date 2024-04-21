@@ -11,15 +11,15 @@ const ChatProvider = ({ children }) => {
 
   const navigateTo = useNavigate();
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"))
-   // console.log(userInfo)
-    setUser(userInfo);
-    // const userInfo = "NULL";
+  // useEffect(() => {
+  //   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+  //  // console.log(userInfo)
+  //   setUser(userInfo);
+  //   // const userInfo = "NULL";
 
-    if (!userInfo) navigateTo('/loginuser');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigateTo]);
+  //   if (!userInfo) navigateTo('/loginuser');
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [navigateTo]);
 
   return (
     <ChatContext.Provider
