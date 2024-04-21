@@ -20,6 +20,7 @@ import gitRouter from "./routes/git.routes.js";
 
 
 
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.header(
@@ -42,6 +43,7 @@ app.use("/api/teams", teamRouter);
 
 app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRouter);
+app.use("/api/hackathons",hackathonRouter);
 
 app.use("/api/hackathons", hackathonRouter);
 app.use("/api/git", gitRouter);

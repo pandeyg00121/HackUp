@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Text } from '@chakra-ui/react';
 
-const Card = ({ name, StartDate,EndDate, prizePool, entryFees }) => {
+const Card2 = ({ name, StartDate,EndDate, prizePool, entryFees }) => {
   return (
     <Box
       borderWidth="1px"
@@ -27,11 +27,8 @@ const Card = ({ name, StartDate,EndDate, prizePool, entryFees }) => {
       <Text>
         <b>Entry Fees:</b> {entryFees}
       </Text>
-      <Button colorScheme="blue" mt={4}>
-        Participate
-      </Button>
     </Box>
   );
 };
 
-export default Card;
+export default Card2;

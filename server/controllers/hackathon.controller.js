@@ -3,6 +3,7 @@ import AppError from './../utils/appError.js';
 import Hackathon from './../models/hackathon.model.js';
 import Team from './../models/teams.model.js';
 
+
 // Register for a Hackathon (either individually or as part of a team)
 // const registerForHackathon = catchAsync(async (req, res, next) => {
 //     const { hackathonId, teamCode, userId, teamName } = req.body;
@@ -155,7 +156,9 @@ const upcomingHackathon = catchAsync( async(req,res,next)=>{
     }
     })
 
+
     console.log("abcde",data);
+
      return res.status(200).json({ success: true, data: data });
     }catch(error){
       return next(new AppError('Hackathon not found', 404));
@@ -164,11 +167,12 @@ const upcomingHackathon = catchAsync( async(req,res,next)=>{
 
 const liveHackathon = catchAsync( async(req,res,next)=>{
     try{
-    const data = await Hackathon.find({
-    "endDate": {
-        "$et": new Date() // Greater than today's date
-    }
+
+     const data = await Hackathon.find({
+    "startDate": { "$lte": new Date() },
+    "endDate": { "$gte": new Date()}
     })
+    console.log(data);
 
      return res.status(200).json({ success: true, data: data });
     }catch(error){
@@ -193,3 +197,4 @@ const pastHackathon = catchAsync( async(req,res,next)=>{
 
 
 export {createTeam, joinTeam, upcomingHackathon,liveHackathon,pastHackathon};
+
