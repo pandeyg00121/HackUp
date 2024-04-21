@@ -2,6 +2,7 @@ const express=require('express');
 const {ECSClient,RunTaskCommand} = require('@aws-sdk/client-ecs')
 const {Server}=require('socket.io');
 const Redis=require('ioredis')
+const cors = require('cors');
 
 const app=express();
 
@@ -34,10 +35,12 @@ const config={
 }
 
 app.use(express.json())
+app.use(cors());
 
 app.post('/project',async(req,res)=>{
-    const {gitURL,slug}=req.body
-    const projectSlug=slug;
+    //const {gitURL,slug}=req.body
+    const gitURL="https://github.com/tripathi08/sample"
+    const projectSlug="p50";
 
     const command=new RunTaskCommand({
         cluster:config.CLUSTER,

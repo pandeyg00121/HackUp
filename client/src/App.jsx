@@ -30,15 +30,19 @@ function App() {
       <Route path="/publisher/currhackathons" element={<CurrHack/>}/>
       <Route path="/publisher/createhackathon" element={<CreateHackathon/>}/>
       <Route path="/leaderboard" element={<Leaderboard/>}/>
-   
-      <Route path="/loginuser" element={<LoginUser/>}/>
-      <Route path="/loginpub" element={<LoginPub/>}/>
+      <Route path="/participate" element={<Participate/>}/>
+      {/* //<Route path="/deploy" element={<DeploymentPage/>}/> */}
+
+      
       <Route path="/users/signup" element={<RegisterUser/>}/>
       <Route path="/publisher/signup" element={<RegisterPublisher/>}/>
       <Route path="/" element={<Home/>}/>
-      <Route path="/past" element={<Past/>}/>
       <Route path="/live" element={<Live/>}/>
       <Route path="/participate/:id" element={<Participate/>}/>
+      <Route path="/loginuser" element={<LoginUser/>}/>
+      <Route path="/loginpub" element={<LoginPub/>}/>
+
+      <Route path="/past" element={<Past/>}/>
       <Route path="/chat" element={<Chatpage/>}/>
       <Route path="/pubhome" element={<Pubhome/>}/>
       <Route path="/publive" element={<Publive/>}/>
