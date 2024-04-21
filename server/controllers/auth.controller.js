@@ -120,7 +120,11 @@ const protect = catchAsync(async (req, res, next) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-  console.log("me",token);
+
+  // if(!req.headers.authorization){
+  //   token = req.headers.
+  // }
+  // console.log("me",token);
   if (!token) {
     //401 stands for unauthorized
     return next(

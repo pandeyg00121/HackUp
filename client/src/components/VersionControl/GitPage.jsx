@@ -6,8 +6,8 @@ import Footer from '../Layout/Footer';
 
 const GitPage = () => {
   const [repoInfo, setRepoInfo] = useState({
-    "name": "my-hackathon-platform",
-    "description": "A platform for organizing hackathons",
+    "name": "Web-Deviola",
+    "description": "Participating in Hackathons!",
     "html_url": "https://github.com/yourusername/my-hackathon-platform",
     "stargazers_count": 100,
     "forks_count": 50,
@@ -66,11 +66,33 @@ const [contributors, setContributors] = useState([
         socket.onclose = () => {
             console.log('WebSocket connection closed');
         };
+  return (
+    <>
+    <Header/>
+    <Flex h={"100vh"} >
+    <Box p="6" bg="blue.900" w={"100vw"}>
+      <Flex direction={"column"} alignItems={"center"}>
+      <Heading color={"yellow.500"}  as="h2" size="xl" mb="4">{repoInfo?.name}</Heading>
+      <Text fontWeight={"bold"} fontSize="lg" color="yellow.600">{repoInfo?.description}</Text>
+     <VStack mt={"4"} align="start" spacing="4">
+        <Link to={"/commits"}>
+          <Text fontWeight={"bold"} fontSize={"lg"} color={"white"}>Commits</Text>
+        </Link>
+        <Link to={"/chat"}>
+          <Text fontWeight={"bold"} fontSize={"lg"} color={"white"}>Chat</Text>
+        </Link>
+        <HStack mt={"5"} spacing="4">
+          <Badge fontSize={"lg"} colorScheme="blue">Stars: {repoInfo?.stargazers_count}</Badge>
+          <Badge fontSize={"lg"} colorScheme="green">Forks: {repoInfo?.forks_count}</Badge>
+          <Badge  fontSize={"lg"} colorScheme="orange">Watchers: {repoInfo?.watchers_count}</Badge>
+        </HStack>
+      </VStack>
 
         return () => {
             socket.close();
         };
     }, []);
+
 
     const handleDeploy = async() => {
         // Logic to deploy project

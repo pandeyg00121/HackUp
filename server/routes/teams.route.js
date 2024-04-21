@@ -11,9 +11,9 @@ router.use(express.json());
 
 
 router.use(authController.protect);
-
 router.post('/register/create/:id',createTeam);
 router.post('/register/join/:id',joinTeam);
+
 
 
 export default router;

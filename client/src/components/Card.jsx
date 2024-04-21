@@ -1,7 +1,15 @@
 import React from 'react';
 import { Box, Button, Text } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
-const Card = ({ name, StartDate,EndDate, prizePool, entryFees }) => {
+const Card = ({id, name, StartDate,EndDate, prizePool, entryFees }) => {
+  const navigateTo = useNavigate();
+
+   const onParticipateClick = () => {
+    // console.log(id);
+    // console.log(`/participate/${id}`);
+    navigateTo(`/participate/${id}`);
+  };
   return (
     <Box
       borderWidth="1px"
@@ -27,7 +35,7 @@ const Card = ({ name, StartDate,EndDate, prizePool, entryFees }) => {
       <Text>
         <b>Entry Fees:</b> {entryFees}
       </Text>
-      <Button colorScheme="blue" mt={4}>
+      <Button colorScheme="blue" mt={4} onClick={onParticipateClick}>
         Participate
       </Button>
     </Box>
