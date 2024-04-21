@@ -39,7 +39,7 @@ const signToken = (id) => {
   const signup = catchAsync(async (req, res, next) => {
   
     const newPublisher = await Publisher.create({
-      name: req.body.name,
+      name: req.body.username,
       email: req.body.email,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
@@ -168,6 +168,8 @@ const verifyPublisher = catchAsync(async (req, res) => {
 
 // Function to create a new Hackathon by a Publisher
 const createHackathon = catchAsync(async (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
   // console.log(req.params);
   const {
     title,

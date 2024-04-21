@@ -1,10 +1,11 @@
-import React from 'react';
+import React ,{useEffect,useState} from 'react';
 import Header from '../Layout/Header';
 import Card from '../Card';
 import { Box, Button, Text, extendTheme, ChakraProvider} from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
 
 // Custom color scheme
+
 const theme = extendTheme({
   colors: {
     customBlue: {
@@ -13,25 +14,34 @@ const theme = extendTheme({
   },
 });
 
-const Home = () => {
+const Past = () => {
+  const [hackathonsData, setHackathonsData] = useState([]); 
   // Sample data for the cards
-  const hackathonsData = [
-    {
-      id: 1,
-      name: 'Hackathon 1',
-      dates: 'April 20 - April 25, 2024',
-      prizePool: '$1000',
-      entryFees: '$20',
-    },
-    {
-      id: 2,
-      name: 'Hackathon 2',
-      dates: 'May 10 - May 15, 2024',
-      prizePool: '$1500',
-      entryFees: '$25',
-    },
-    // Add more hackathon data as needed
-  ];
+   const loadData = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:3500/api/hackathons/past", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setHackathonsData(data.data);  // Set fetched data to state
+        console.log("Data set to state:", data.data);
+      } else {
+        throw new Error('Failed to fetch data: ' + response.status);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(()=>{
+    loadData();
+  },[]);
+
 
   const headingStyle = {
     fontWeight: 'bold',
@@ -65,9 +75,10 @@ const Home = () => {
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
             {hackathonsData.map(hackathon => (
               <Card
-                key={hackathon.id}
-                name={hackathon.name}
-                dates={hackathon.dates}
+                 key={hackathon._id}
+                name={hackathon.description}
+                StartDate={hackathon.startDate}
+                EndDate ={hackathon.endDate}
                 prizePool={hackathon.prizePool}
                 entryFees={hackathon.entryFees}
               />
@@ -79,4 +90,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Past;

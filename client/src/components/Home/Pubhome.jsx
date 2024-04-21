@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import Header from '../Layout/Header';
-import Card from '../Card';
+import Card2 from '../Card2';
 import { Box, Button, Text, extendTheme, ChakraProvider} from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ const theme = extendTheme({
   },
 });
 
-const Home = () => {
+const Pubhome = () => {
    const [hackathonsData, setHackathonsData] = useState([]); // Initial empty array
 
   const loadData = async () => {
@@ -54,17 +54,17 @@ const Home = () => {
         <Header />
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ marginBottom: '1rem', display: 'flex' }}>
-            <NavLink to="/home">
+            <NavLink to="/pubhome">
             <Button colorScheme="customBlue" mt={4} marginRight={10}> {/* Change color scheme to customBlue */}
               Incoming
             </Button>
             </NavLink>
-            <NavLink to="/past">
+            <NavLink to="/pubpast">
             <Button colorScheme="white" mt={4} marginRight={10} color={'black'} border={2}>
               Past
             </Button>
             </NavLink>
-            <NavLink to="/live">
+            <NavLink to="/publive">
             <Button colorScheme="white" mt={4} marginRight={10} color={'black'} border={2}>
               Live
             </Button>
@@ -73,7 +73,7 @@ const Home = () => {
           <h2 style={headingStyle}>Hackathons</h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
             {hackathonsData.map(hackathon => (
-              <Card
+              <Card2
                 key={hackathon._id}
                 name={hackathon.description}
                 StartDate={hackathon.startDate}
@@ -89,4 +89,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Pubhome;

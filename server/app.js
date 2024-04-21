@@ -14,7 +14,7 @@ import teamRouter from "./routes/teams.route.js";
 
 import chatRouter from "./routes/chat.routes.js";
 import messageRouter from "./routes/message.routes.js";
-
+import hackathonRouter from "./routes/hackathon.routes.js"
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -38,6 +38,7 @@ app.use("/api/teams", teamRouter);
 
 app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRouter);
+app.use("/api/hackathons",hackathonRouter);
 
 app.use('/',(req,res)=>{
   res.status(200).json({

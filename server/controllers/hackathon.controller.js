@@ -3,6 +3,7 @@ import AppError from './../utils/appError.js';
 import Hackathon from './../models/hackathon.model.js';
 import Team from './../models/teams.model.js';
 
+
 // Register for a Hackathon (either individually or as part of a team)
 const registerForHackathon = catchAsync(async (req, res, next) => {
     const { hackathonId, teamCode, userId, teamName } = req.body;
@@ -70,5 +71,46 @@ function generateTeamCode() {
   return code;
 }
 
+const upcomingHackathon = catchAsync( async(req,res,next)=>{
+    try{
+    const data = await Hackathon.find({
+    "startDate": {
+        "$gt": new Date() // Greater than today's date
+    }
+    })
 
-export default {registerForHackathon};
+    // console.log("abcde",data);
+     return res.status(200).json({ success: true, data: data });
+    }catch(error){
+      return next(new AppError('Hackathon not found', 404));
+    }
+});
+
+const liveHackathon = catchAsync( async(req,res,next)=>{
+    try{
+     const data = await Hackathon.find({
+    "startDate": { "$lte": new Date() },
+    "endDate": { "$gte": new Date()}
+    })
+    console.log(data);
+     return res.status(200).json({ success: true, data: data });
+    }catch(error){
+      return next(new AppError('Hackathon not found', 404));
+    }
+});
+const pastHackathon = catchAsync( async(req,res,next)=>{
+    try{
+    const data = await Hackathon.find({
+    "endDate": {
+        "$lt": new Date() // Greater than today's date
+    }
+    })
+
+     return res.status(200).json({ success: true, data: data });
+    }catch(error){
+      return next(new AppError('Hackathon not found', 404));
+    }
+});
+
+
+export {registerForHackathon,upcomingHackathon,liveHackathon,pastHackathon};
