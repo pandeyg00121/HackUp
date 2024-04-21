@@ -67,6 +67,22 @@ const userSchema = new mongoose.Schema({
     default: true,
   },
   accountCreatedAt: Date,
+  rating: {
+    type: Number,
+    default: 1000, // Default rating for a new user
+  },
+  totalHackathons: {
+    type: Number,
+    default: 0, // Total hackathons participated in
+  },
+  hackathonsWon:{
+type: Number,
+default:0
+  },
+  lastActive: {
+    type: Date,
+    default: Date.now, // Last active date
+  }
 });
 
 userSchema.pre("save", async function (next) {

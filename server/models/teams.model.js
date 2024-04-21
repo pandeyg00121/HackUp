@@ -5,7 +5,6 @@ const teamSchema = new mongoose.Schema({
     type: String,
     required: [true, "A Team must have a name"],
     unique: true,
-    trim: true,
     minlength: 3,
   },
   members: {
