@@ -41,18 +41,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const fetchMessages = async () => {
     if (!selectedChat) return;
     const token = localStorage.getItem("userToken");
+    // console.log("hi"+token);
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       };
 
       setLoading(true);
 
       const { data } = await axios.get(
-        `http://127.0.0.1:3500/api/message/${selectedChat._id}`,
-        config
+        `http://127.0.0.1:3500/api/message/${selectedChat._id}`,config
       );
       setMessages(data);
       setLoading(false);
@@ -70,26 +70,28 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       });
     }
   };
-
+  
   const sendMessage = async (event) => {
+    const token = localStorage.getItem("userToken")
     if (event.key === "Enter" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-        };
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      };
         setNewMessage("");
+        // console.log("me",selectedChat);
         const { data } = await axios.post(
-          "/api/message",
+          "http://127.0.0.1:3500/api/message",
           {
             content: newMessage,
-            chatId: selectedChat,
+            chatId: selectedChat._id,
           },
           config
         );
+        console.log(data);        
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
@@ -140,6 +142,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
+    //console.log(newMessage);
 
     if (!socketConnected) return;
 
